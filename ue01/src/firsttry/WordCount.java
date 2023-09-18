@@ -3,12 +3,19 @@ package firsttry;
 public class WordCount {
 
     public static void main(String[] args) {
-        System.out.println(count(" eins<img alt=\"<bild keinwort> keinwort"));
+        System.out.println(count(" eins<img alt=\"<bild \\\" keinwort> keinwort\" keinwort>zwei"));
     }
     public static long count(String s){
         long count = 0;
         boolean isWord = false;
 
+        System.out.println(s);
+        for (int i = 0; i < s.length(); i++) {
+            if(s.charAt(i) == '"' && s.charAt(i-1) == '\\'){
+                s = s.replace(s.substring(i-1, i+1), "");
+            }
+        }
+        System.out.println(s);
         for (int i = 0; i < s.length(); i++) {
             if (s.charAt(i) == '"') {
                 int tagEnd = s.indexOf('"', i + 1);
