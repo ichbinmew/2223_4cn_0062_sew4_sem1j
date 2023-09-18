@@ -42,4 +42,26 @@ class WordCountTest {
         assertEquals(1, WordCount.count("a "));
         assertEquals(1, WordCount.count(" a "));
     }
+    @Test
+    void mitHtml() {
+        // mit html
+        assertEquals(1, WordCount.count(" eins  <html> "));
+        assertEquals(1, WordCount.count(" eins  < html> "));
+        assertEquals(1, WordCount.count(" eins  <html > "));
+        assertEquals(1, WordCount.count(" eins  < html > "));
+        assertEquals(4, WordCount.count(" eins <html> zwei<html>drei <html> vier"));
+
+        assertEquals(2, WordCount.count(" eins <html> zwei "));
+        assertEquals(2, WordCount.count(" eins <html>zwei "));
+        assertEquals(2, WordCount.count(" eins<html> zwei "));
+        assertEquals(2, WordCount.count(" eins<html>zwei "));
+        assertEquals(2, WordCount.count(" eins<img alt=\"xxx\" > zwei"));
+        assertEquals(2, WordCount.count(" eins<img alt=\"xxx yyy\" > zwei"));
+
+        assertEquals(2, WordCount.count(" eins \"zwei\" "));
+        assertEquals(2, WordCount.count(" eins\"zwei\" "));
+        assertEquals(2, WordCount.count(" eins \"zwei\""));
+        assertEquals(3, WordCount.count(" eins \"zwei\"drei"));
+        assertEquals(3, WordCount.count(" eins \"zwei\" drei"));
+    }
 }
