@@ -81,4 +81,13 @@ class WordCountTest {
         assertEquals(2, WordCount.count(" eins<img alt=\"<bild keinwort keinwort\">zwei"));
         assertEquals(2, WordCount.count(" eins<img alt=\"<bild keinwort< keinwort\">zwei"));
     }
+    @Test
+    void ganzGanzFies() {
+        // ganz ganz fies
+        assertEquals(2, WordCount.count(" eins<img alt=\"<bild \\\" keinwort> keinwort\" keinwort>zwei"));
+        assertEquals(2, WordCount.count(" eins<img alt=\"<bild \\\" keinwort<keinwort\" keinwort>zwei"));
+        assertEquals(2, WordCount.count(" eins<img alt=\"<bild \\\" keinwort keinwort\" keinwort>zwei"));
+
+        assertEquals(4, WordCount.count(" \\\"null\\\" eins<img alt=\"<bild \\\" keinwort keinwort\" keinwort>zwei \"drei\""));
+    }
 }
