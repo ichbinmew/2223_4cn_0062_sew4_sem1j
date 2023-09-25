@@ -65,4 +65,30 @@ class WordCountTest {
         assertEquals(3, WordCount.count(" eins \"zwei\"drei"));
         assertEquals(3, WordCount.count(" eins \"zwei\" drei"));
     }
+    @Test
+    void htmlTrickreich() {
+        // html - trickreich
+        assertEquals(1, WordCount.count(" eins<html"));
+
+        assertEquals(2, WordCount.count(" eins<img alt=\"<bild>\" > zwei"));
+        assertEquals(2, WordCount.count(" eins<img alt=\"bild>\" > zwei"));
+        assertEquals(2, WordCount.count(" eins<img alt=\"<bild>\" keinwort> zwei"));
+        assertEquals(2, WordCount.count(" eins<img alt=\"<bild>\" src=\"bild.png\" >zwei"));
+        assertEquals(2, WordCount.count(" eins<img alt=\"<bild\" keinwort>zwei"));
+
+        assertEquals(1, WordCount.count(" eins<img alt=\"<bild\" keinwort"));
+        assertEquals(2, WordCount.count(" eins<img alt=\"<bild\" keinwort> zwei"));
+        assertEquals(1, WordCount.count(" eins<img alt=\"<bild keinwort> keinwort"));
+        assertEquals(2, WordCount.count(" eins<img alt=\"<bild keinwort keinwort\">zwei"));
+        assertEquals(2, WordCount.count(" eins<img alt=\"<bild keinwort< keinwort\">zwei"));
+    }
+    @Test
+    void ganzGanzFies() {
+        // ganz ganz fies
+        assertEquals(2, WordCount.count(" eins<img alt=\"<bild \\\" keinwort> keinwort\" keinwort>zwei"));
+        assertEquals(2, WordCount.count(" eins<img alt=\"<bild \\\" keinwort<keinwort\" keinwort>zwei"));
+        assertEquals(2, WordCount.count(" eins<img alt=\"<bild \\\" keinwort keinwort\" keinwort>zwei"));
+
+        assertEquals(4, WordCount.count(" \\\"null\\\" eins<img alt=\"<bild \\\" keinwort keinwort\" keinwort>zwei \"drei\""));
+    }
 }

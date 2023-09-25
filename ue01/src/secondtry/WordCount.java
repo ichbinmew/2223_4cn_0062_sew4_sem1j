@@ -2,13 +2,14 @@ package secondtry;
 
 public class WordCount {
     public static void main(String[] args) {
-        System.out.println(count(" eins <html> zwei<html>drei <html> vier"));
+        System.out.println(count(" eins<img alt=\"<bild\" keinwort>zwei"));
     }
 
     public enum State {
         NOWORD,
         INWORD,
-        INTAG
+        INTAG,
+        VERSCHACHTELT,
     }
 
     public static int count(String text) {
@@ -21,8 +22,14 @@ public class WordCount {
 
         for (int i = 0; i < text.length(); i++) {
             switch (state) {
+                case VERSCHACHTELT -> {
+                    switch (text.charAt(i)) {
+                        case '>' -> state = State.INTAG;
+                    }
+                }
                 case INTAG -> {
                     switch (text.charAt(i)) {
+                        case '<' -> state = State.VERSCHACHTELT;
                         case '>' -> state = State.NOWORD;
                     }
                 }
