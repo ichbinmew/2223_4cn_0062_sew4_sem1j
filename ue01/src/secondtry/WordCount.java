@@ -10,6 +10,7 @@ public class WordCount {
         INWORD,
         INTAG,
         VERSCHACHTELT,
+        INSTRING
     }
 
     public static int count(String text) {
@@ -22,6 +23,12 @@ public class WordCount {
 
         for (int i = 0; i < text.length(); i++) {
             switch (state) {
+                case INSTRING -> {
+                    switch (text.charAt(i)) {
+                        case '<' -> i++;
+                        case '"' -> state = State.INTAG;
+                    }
+                }
                 case VERSCHACHTELT -> {
                     switch (text.charAt(i)) {
                         case '>' -> state = State.INTAG;
@@ -31,17 +38,16 @@ public class WordCount {
                     switch (text.charAt(i)) {
                         case '<' -> state = State.VERSCHACHTELT;
                         case '>' -> state = State.NOWORD;
+                        case '"' -> state = State.INSTRING;
                     }
                 }
                 case NOWORD -> {
-                    switch (text.charAt(i)) {
-                        case '<' -> state = State.INTAG;
-                        case '>' -> state = State.NOWORD;
-                        default -> {
-                            if (Character.isAlphabetic(text.charAt(i))) {
-                                state = State.INWORD;
-                                counter++;
-                            }
+                    if (text.charAt(i) == '<') {
+                        state = State.INTAG;
+                    } else {
+                        if (Character.isAlphabetic(text.charAt(i))) {
+                            state = State.INWORD;
+                            counter++;
                         }
                     }
                 }
