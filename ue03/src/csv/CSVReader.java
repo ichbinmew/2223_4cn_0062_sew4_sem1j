@@ -5,7 +5,7 @@ import java.util.List;
 
 public class CSVReader {
     public static void main(String[] args) {
-        String[] result = split("\"ok\",\"ok, ok\",ok\"ok\",\"nicht\"ok,\"nicht ok");
+        String[] result = split("\"ok\",\"ok\"\"ok\",ok");
         for (String s : result) {
             System.out.println(s);
         }
@@ -49,8 +49,10 @@ public class CSVReader {
         STRING_END {
             @Override
             public State process(char c) {
-                if(c == ','){
+                if(c == ',') {
                     return START;
+                } else if (c == '"') {
+                    return INSIDE_STRING;
                 } else {
                     throw new IllegalStateException("String not ended");
                 }
