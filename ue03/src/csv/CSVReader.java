@@ -76,17 +76,14 @@ public class CSVReader {
         for (char c : input.toCharArray()) {
             currentState = currentState.process(c, currentField);
 
-            if (Objects.requireNonNull(currentState) == State.START) {
-                addField(results, currentField);
+            if (Objects.equals(currentState, State.START)) {
+                results.add(currentField.toString());
+                currentField.setLength(0);
             }
         }
 
-        addField(results, currentField);
+        results.add(currentField.toString());
+        currentField.setLength(0);
         return results.toArray(new String[0]);
-    }
-
-    private static void addField(List<String> results, StringBuilder field) {
-        results.add(field.toString());
-        field.setLength(0);
     }
 }
