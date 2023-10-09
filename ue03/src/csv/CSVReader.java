@@ -5,7 +5,7 @@ import java.util.List;
 
 public class CSVReader {
     public static void main(String[] args) {
-        String[] result = split("a,b,c");
+        String[] result = split("\"ok\",\"ok, ok\"");
         for (String s : result) {
             System.out.println(s);
         }
@@ -17,6 +17,8 @@ public class CSVReader {
             public State process(char c) {
                 if (c == ',') {
                     return START;
+                } else if (c == '"') {
+                    return INSIDE_STRING;
                 } else {
                     return INSIDE_FIELD;
                 }
@@ -31,8 +33,17 @@ public class CSVReader {
                     return INSIDE_FIELD;
                 }
             }
+        },
+        INSIDE_STRING {
+            @Override
+            public State process(char c) {
+                if (c == '"') {
+                    return INSIDE_FIELD;
+                } else {
+                    return INSIDE_STRING;
+                }
+            }
         };
-
         public abstract State process(char c);
     }
 
