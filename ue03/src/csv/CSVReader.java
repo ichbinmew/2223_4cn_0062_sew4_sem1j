@@ -5,7 +5,7 @@ import java.util.List;
 
 public class CSVReader {
     public static void main(String[] args) {
-        String[] result = split("\"ok\",\"ok, ok\"");
+        String[] result = split("\"ok\",\"ok, ok\",ok\"ok\",\"nicht\"ok,\"nicht ok");
         for (String s : result) {
             System.out.println(s);
         }
@@ -29,6 +29,8 @@ public class CSVReader {
             public State process(char c) {
                 if (c == ',') {
                     return START;
+                } else if (c == '"') {
+                    return INSIDE_STRING;
                 } else {
                     return INSIDE_FIELD;
                 }
@@ -38,9 +40,19 @@ public class CSVReader {
             @Override
             public State process(char c) {
                 if (c == '"') {
-                    return INSIDE_FIELD;
+                    return STRING_END;
                 } else {
                     return INSIDE_STRING;
+                }
+            }
+        },
+        STRING_END {
+            @Override
+            public State process(char c) {
+                if(c == ','){
+                    return START;
+                } else {
+                    throw new IllegalStateException("String not ended");
                 }
             }
         };
@@ -51,15 +63,27 @@ public class CSVReader {
         List<String> results = new ArrayList<>();
         StringBuilder currentField = new StringBuilder();
         State currentState = State.START;
-
-        for (char c : input.toCharArray()) {
+        int count = 0;
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
             currentState = currentState.process(c);
-
-            if (currentState == State.START) {
-                results.add(currentField.toString());
-                currentField.setLength(0);
-            } else {
-                currentField.append(c);
+            switch (currentState) {
+                case START -> {
+                    results.add(currentField.toString());
+                    currentField = new StringBuilder();
+                }
+                case INSIDE_STRING -> {
+                    if (input.indexOf('"', i) == -1) {
+                        throw new IllegalStateException("String not ended");
+                    } else  if (c != '"'){
+                        currentField.append(c);
+                    }
+                }
+                default -> {
+                    if (c != '"'){
+                        currentField.append(c);
+                    }
+                }
             }
         }
 
