@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class CSVReader {
     public static void main(String[] args) {
-        String[] result = split("\"ok\",\"ok\"\"ok\",ok");
+        String[] result = split("  \"ok\",  okok, ok");
         for (String s : result) {
             System.out.println(s);
         }
@@ -18,6 +18,8 @@ public class CSVReader {
             public State process(char c, StringBuilder currentField) {
                 if (c == ',') {
                     return START;
+                }else if(Character.isWhitespace(c)){
+                    return FUEHREND_WHITESPACE;
                 } else if (c == '"') {
                     return INSIDE_STRING;
                 } else {
@@ -58,6 +60,21 @@ public class CSVReader {
                 } else if (c == '"') {
                     currentField.append('"');
                     return INSIDE_STRING;
+                } else {
+                    currentField.append(c);
+                    return INSIDE_FIELD;
+                }
+            }
+        },
+        FUEHREND_WHITESPACE {
+            @Override
+            public State process(char c, StringBuilder currentField) {
+                if (c == ',') {
+                    return START;
+                } else if (c == '"') {
+                    return INSIDE_STRING;
+                } else if (Character.isWhitespace(c)) {
+                    return FUEHREND_WHITESPACE;
                 } else {
                     currentField.append(c);
                     return INSIDE_FIELD;

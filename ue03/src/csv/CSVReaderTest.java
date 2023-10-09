@@ -23,6 +23,6 @@ class CSVReaderTest {
     }
     @Test
     void B4() {
-        assertArrayEquals(new String[]{"ok", "okok", "ok"}, CSVReader.split("\"ok\",\"ok\"\"ok\",ok"));
+        assertArrayEquals(new String[]{"ok", "okok", "ok"}, CSVReader.split("\"ok\",  okok,ok"));
     }
 }
