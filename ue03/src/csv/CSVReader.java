@@ -8,6 +8,11 @@ import java.util.Objects;
  * Die Klasse `CSVReader` bietet Methoden zur Verarbeitung von CSV-Daten, einschließlich einer Methode zum Aufteilen von CSV-Zeilen in einzelne Felder
  */
 public class CSVReader {
+    /**
+     * Die Main-Methode zum Testen der CSV-Verarbeitung
+     *
+     * @param args Die Kommandozeilenargumente
+     */
     public static void main(String[] args) {
         String[] result = split("\"ok\",ok\"\"ok, ok");
         for (String s : result) {
@@ -18,14 +23,10 @@ public class CSVReader {
      * Ein Enumerator, der verschiedene Zustände für die CSV-Analyse darstellt
      */
     public enum State {
+        /**
+         * Ist der Startzustand
+         */
         START {
-            /**
-             * Ist der startende Zustand, der beim ersten Zeichen einer CSV-Zeile aufgerufen wird
-             *
-             * @param c Das aktuelle Zeichen
-             * @param currentField Das aktuelle Feld, das gerade verarbeitet wird
-             * @return Der nächste Zustand
-             */
             @Override
             public State process(char c, StringBuilder currentField) {
                 //System.out.println(c + ": START");
@@ -41,14 +42,10 @@ public class CSVReader {
                 }
             }
         },
+        /**
+         * Ist der Zustand, wenn das aktuelle Zeichen in einem Feld ist
+         */
         INSIDE_FIELD {
-            /**
-             * Ist der Zustand, wenn das aktuelle Zeichen innerhalb eines Feldes ist
-             *
-             * @param c Das aktuelle Zeichen
-             * @param currentField Das aktuelle Feld, das gerade verarbeitet wird
-             * @return Der nächste Zustand
-             */
             @Override
             public State process(char c, StringBuilder currentField) {
                 //System.out.println(c + ": INSIDE_FIELD");
@@ -62,14 +59,10 @@ public class CSVReader {
                 }
             }
         },
+        /**
+         * Ist der Zustand, wenn das aktuelle Zeichen in einem String ist
+         */
         INSIDE_STRING {
-            /**
-             * Ist der Zustand, wenn das aktuelle Zeichen in einem String ist
-             *
-             * @param c Das aktuelle Zeichen
-             * @param currentField Das aktuelle Feld, das gerade verarbeitet wird
-             * @return Der nächste Zustand
-             */
             @Override
             public State process(char c, StringBuilder currentField) {
                 //System.out.println(c + ": INSIDE_STRING");
@@ -81,14 +74,10 @@ public class CSVReader {
                 }
             }
         },
+        /**
+         * Ist der Zustand, wenn das aktuelle Zeichen in einem String ist und ein Anführungszeichen gefunden wurde
+         */
         QUOTE_STRING {
-            /**
-             * Ist der Zustand, wenn das aktuelle Zeichen in einem String ist und ein Anführungszeichen gefunden wurde
-             *
-             * @param c Das aktuelle Zeichen
-             * @param currentField Das aktuelle Feld, das gerade verarbeitet wird
-             * @return Der nächste Zustand
-             */
             @Override
             public State process(char c, StringBuilder currentField) {
                 //System.out.println(c + ": QUOTE_STRING");
@@ -103,14 +92,10 @@ public class CSVReader {
                 }
             }
         },
+        /**
+         * Ist der Zustand, am Anfang eines Felds ein Whitespace gefunden wurde
+         */
         FUEHREND_WHITESPACE {
-            /**
-             * Ist der Zustand, wenn das Aktuelle Zeichen ein Whitespace ist und das Feld noch nicht begonnen hat
-             *
-             * @param c Das aktuelle Zeichen
-             * @param currentField Das aktuelle Feld, das gerade verarbeitet wird
-             * @return Der nächste Zustand
-             */
             @Override
             public State process(char c, StringBuilder currentField) {
                 //System.out.println(c + ": FUEREND_WHITESPACE");
@@ -126,14 +111,10 @@ public class CSVReader {
                 }
             }
         },
+        /**
+         * Ist der Zustand, wenn das aktuelle Zeichen in einem Feld ist und ein Anführungszeichen gefunden wurde
+         */
         QUOTE_FIELD {
-            /**
-             * Ist Zustand, wenn das aktuelle Zeichen in einem Feld ist und ein Anführungszeichen gefunden wurde
-             *
-             * @param c Das aktuelle Zeichen
-             * @param currentField Das aktuelle Feld, das gerade verarbeitet wird
-             * @return Der nächste Zustand
-             */
             @Override
             public State process(char c, StringBuilder currentField) {
                 //System.out.println(c + ": QUOTE_FIELD");
@@ -149,6 +130,13 @@ public class CSVReader {
             }
         };
 
+        /**
+         * Verarbeitet das aktuelle Zeichen und gibt den nächsten Zustand zurück
+         *
+         * @param c Das aktuelle Zeichen
+         * @param currentField Das aktuelle Feld, das gerade verarbeitet wird
+         * @return Der nächste Zustand
+         */
         public abstract State process(char c, StringBuilder currentField);
     }
 
