@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
+ * @author Jacob Schrott
  * Die Klasse `WordCount` bietet Methoden zur Verarbeitung von HTML-Daten, einschließlich einer Methode zum Zählen von Wörtern
  */
 public class WordCount {

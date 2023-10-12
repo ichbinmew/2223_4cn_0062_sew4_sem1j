@@ -1,6 +1,7 @@
 package firsttry;
 
 /**
+ * @author Jacob Schrott
  * Die Klasse `WordCount` bietet Methoden zur Verarbeitung von Texten, einschließlich einer Methode zum Zählen von Wörtern
  */
 public class WordCount {

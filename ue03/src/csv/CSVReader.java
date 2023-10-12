@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
+ * @author Jacob Schrott
  * Die Klasse `CSVReader` bietet Methoden zur Verarbeitung von CSV-Daten, einschließlich einer Methode zum Aufteilen von CSV-Zeilen in einzelne Felder
  */
 public class CSVReader {
