@@ -24,7 +24,7 @@ public class CSVReader {
      */
     public enum State {
         /**
-         * Ist der Startzustand
+         * Ist der Startzustand oder der Zustand, wenn ein Feld beendet wurde
          */
         START {
             @Override
