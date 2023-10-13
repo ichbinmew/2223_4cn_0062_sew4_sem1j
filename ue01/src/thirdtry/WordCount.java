@@ -4,15 +4,13 @@ import java.util.Objects;
 
 public class WordCount {
     public static void main(String[] args) {
-        System.out.println(count("ein:erster.Text"));
+        System.out.println(count(" eins <html> zwei<html>drei <html> vier"));
     }
     public enum State {
         NOWORD {
             @Override
             public State process(char c) {
-                if (c == ' '){
-                    return NOWORD;
-                } else if (c == '<'){
+                if (c == '<'){
                     return INTAG;
                 } else {
                     if(Character.isAlphabetic(c)){
@@ -38,10 +36,10 @@ public class WordCount {
         INWORD {
             @Override
             public State process(char c) {
-                if (!Character.isAlphabetic(c)){
+                if (c == '<'){
+                return INTAG;
+                } else if (!Character.isAlphabetic(c)){
                     return NOWORD;
-                } else if (c == '<'){
-                    return INTAG;
                 } else {
                     return INWORD;
                 }
@@ -50,12 +48,10 @@ public class WordCount {
         INTAG {
             @Override
             public State process(char c) {
-                if (c == ' '){
+                if (c == '>'){
                     return NOWORD;
-                } else if (c == '<'){
-                    return INTAG;
                 } else {
-                    return INWORD;
+                    return INTAG;
                 }
             }
         };
